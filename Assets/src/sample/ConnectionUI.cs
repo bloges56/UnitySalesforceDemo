@@ -12,24 +12,15 @@ public class ConnectionUI : MonoBehaviour
     [SerializeField]
     Button submit;
 
-    public TMP_Text username;
-
-    public TMP_Text password;
-
-    [SerializeField]
-    TMP_Text consumerKey;
-
-    [SerializeField]
-    TMP_Text consumerSecret;
+    SalesforceClient salesforceClient;
 
     IEnumerator Connect()
     {
-        // Get Salesforce client component
-        SalesforceClient salesforceClient = GetComponent<SalesforceClient>();
+        // Get Salesforce client component 
         //salesforceClient.consumerKey = consumerKey.text;
         //salesforceClient.consumerSecret = consumerSecret.text;
         Coroutine<bool> loginRoutine = this.StartCoroutine<bool>(
-        salesforceClient.login(username.text.ToString(), password.text.ToString())
+        salesforceClient.login()
     );
         yield return loginRoutine.coroutine;
         try
@@ -59,6 +50,11 @@ public class ConnectionUI : MonoBehaviour
         StartCoroutine(Connect());
     }
 
+
+    private void Start()
+    {
+        salesforceClient = GetComponent<SalesforceClient>();
+    }
 }
 
 

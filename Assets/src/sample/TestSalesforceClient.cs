@@ -16,7 +16,7 @@ public class TestSalesforceClient : MonoBehaviour {
 
         // Init client & log in
         Coroutine<bool> loginRoutine = this.StartCoroutine<bool>(
-            sfdcClient.login(salesforceUsername, salesforcePassword)
+            sfdcClient.login()
         );
         yield return loginRoutine.coroutine;
         try {

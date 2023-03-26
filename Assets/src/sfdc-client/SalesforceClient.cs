@@ -24,10 +24,33 @@ namespace Salesforce
         [Header("Authentication Settings (keep those secret!)")]
         [Tooltip("Change default value when using a sandbox or restricting authentication domain")]
         public string oAuthEndpoint = "https://login.salesforce.com/services/oauth2/token";
-        [Tooltip("Get this value from your Salesforce connected application")]
-        public string consumerKey = "";
-        [Tooltip("Get this value from your Salesforce connected application")]
-        public string consumerSecret = "";
+        
+        string consumerKey;
+        
+        string consumerSecret;
+
+        string username;
+        string password;
+
+        public void SetUsername(string username)
+        {
+            this.username = username;
+        }
+
+        public void SetPassword(string password)
+        {
+            this.password = password;
+        }
+
+        public void SetConsumerKey(string consumerKey)
+        {
+            this.consumerKey = consumerKey;
+        }
+
+        public void SetConsumerSecret(string consumerSecret)
+        {
+            this.consumerSecret = consumerSecret;
+        }
 
         private SalesforceConnection connection;
 
@@ -52,8 +75,7 @@ namespace Salesforce
         * @throws SalesforceAuthenticationException if authentication request fails due to invalid credentials
         * @throws SalesforceApiException if authentication request fails (possible reasons: network...)
         */
-        public IEnumerator login(string username, string password) {
-            Debug.Log(consumerKey);
+        public IEnumerator login() {
             // Check configuration
             assertConfigurationIsValid(username, password);
 
@@ -69,7 +91,8 @@ namespace Salesforce
             form.AddField("client_secret", consumerSecret);
             form.AddField("client_id", consumerKey);
             form.AddField("grant_type", "password");
-
+            Debug.Log(username.ToString());
+            yield return new WaitUntil(() => username.ToString() == "brady@capgemini.com" && password.ToString() == "Hikeweedbaldwine@43");
             // Send request & parse response
             using (UnityWebRequest request = UnityWebRequest.Post(oAuthEndpoint, form)) {
                 yield return request.SendWebRequest();
