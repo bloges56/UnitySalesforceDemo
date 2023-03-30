@@ -1,25 +1,16 @@
 using Salesforce;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConnectionUI : MonoBehaviour
+public class ObjectUI : MonoBehaviour
 {
-    //serialized input fields
-    [SerializeField]
-    Button submit;
 
-    [SerializeField]
-    GameObject playerCam;
-
-    [SerializeField]
-    GameObject player;
     [SerializeField]
     SalesforceClient salesforceClient;
 
-    IEnumerator Connect()
+    IEnumerator CreateAccount()
     {
         // Get Salesforce client component 
         //salesforceClient.consumerKey = consumerKey.text;
@@ -32,9 +23,6 @@ public class ConnectionUI : MonoBehaviour
         {
             loginRoutine.getValue();
             Debug.Log("Salesforce login successful.");
-            gameObject.SetActive(false);
-            player.SetActive(true);
-            playerCam.SetActive(true);
         }
         catch (SalesforceConfigurationException e)
         {
@@ -51,12 +39,19 @@ public class ConnectionUI : MonoBehaviour
             Debug.Log("Salesforce login failed");
             throw e;
         }
+
+        // Create sample account
+        Account accountRecord = new Account(null, "Test account");
+        Coroutine<Account> insertAccountRoutine = this.StartCoroutine<Account>(
+            salesforceClient.insert(accountRecord)
+        );
+        yield return insertAccountRoutine.coroutine;
+        insertAccountRoutine.getValue();
+        Debug.Log("Account created");
     }
 
-    public void OnSubmit()
+    public void OnCreateAccount()
     {
-        StartCoroutine(Connect());
+        StartCoroutine(CreateAccount());
     }
 }
-
-
