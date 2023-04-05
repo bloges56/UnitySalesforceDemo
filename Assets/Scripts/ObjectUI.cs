@@ -10,6 +10,12 @@ public class ObjectUI : MonoBehaviour
     [SerializeField]
     SalesforceClient salesforceClient;
 
+    [SerializeField]
+    PlayerMovement playerMovement;
+
+    [SerializeField]
+    CameraMovement cameraMovement;
+
     IEnumerator CreateAccount()
     {
         // Get Salesforce client component 
@@ -53,5 +59,13 @@ public class ObjectUI : MonoBehaviour
     public void OnCreateAccount()
     {
         StartCoroutine(CreateAccount());
+    }
+
+    public void OnExit()
+    {
+        playerMovement.enabled = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        cameraMovement.enabled = true;
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 }
