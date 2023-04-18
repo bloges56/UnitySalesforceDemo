@@ -16,6 +16,13 @@ public class ObjectUI : MonoBehaviour
     [SerializeField]
     CameraMovement cameraMovement;
 
+    Account accountRecord =  new Account(null, "Test Account");
+
+    public void SetName(string name)
+    {
+        accountRecord.name = name;
+    }
+
     IEnumerator CreateAccount()
     {
         // Get Salesforce client component 
@@ -47,13 +54,12 @@ public class ObjectUI : MonoBehaviour
         }
 
         // Create sample account
-        Account accountRecord = new Account(null, "Test account");
         Coroutine<Account> insertAccountRoutine = this.StartCoroutine<Account>(
             salesforceClient.insert(accountRecord)
         );
         yield return insertAccountRoutine.coroutine;
         insertAccountRoutine.getValue();
-        Debug.Log("Account created");
+        Debug.Log("Account created named: " + accountRecord.name);
     }
 
     public void OnCreateAccount()
