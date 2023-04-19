@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -18,8 +19,13 @@ public class CameraMovement : MonoBehaviour
     //variables to track current rotation of camera
     float xRotation;
     float yRotation;
-    
+
     // Start is called before the first frame updat
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
 
     // Update is called once per frame
     void Update()
