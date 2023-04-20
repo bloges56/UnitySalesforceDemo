@@ -19,8 +19,11 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField]
     float interactRange;
 
+    [SerializeField]
+    GameObject accountList;
+
     //Detect when a player interacts with an object
-    private void Interact()
+    private IEnumerator Interact()
     {
         //detect if player presses interact button
         if(Input.GetKeyDown(interactButton))
@@ -32,10 +35,11 @@ public class ObjectInteraction : MonoBehaviour
             //if the ray hits an object, set it's object canvas to active
             if(Physics.Raycast(ray, out hit, interactRange) && hit.transform.CompareTag("Object"))
             {
-                hit.transform.GetChild(1).gameObject.SetActive(true);
                 GetComponent<PlayerMovement>().enabled = false;
                 Cursor.lockState = CursorLockMode.None;
                 playerCamera.gameObject.GetComponent<CameraMovement>().enabled = false;
+                accountList.SetActive(true);
+                yield return hit.transform.gameObject.GetComponent<ObjectUI>().GetAccounts();
             }
         }
     }
@@ -48,6 +52,6 @@ public class ObjectInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Interact();
+        StartCoroutine(Interact());
     }
 }
