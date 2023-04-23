@@ -1079,7 +1079,7 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 775269606}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ObjectUI, Assembly-CSharp
         m_MethodName: SetName
         m_Mode: 0
@@ -2144,14 +2144,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 775269600}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c0ce4558c9ec824e97730de5031fc2a, type: 3}
+  m_Script: {fileID: 11500000, guid: d3bc087af0b4df74a9f5db9898310bfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   salesforceClient: {fileID: 1339685146}
   playerMovement: {fileID: 1403646512}
   cameraMovement: {fileID: 963194229}
-  accountRecordsParent: {fileID: 1658374720}
-  accountUIPrefab: {fileID: 6564293860626555974, guid: 3cfd823dd819faa4eb982f68ad9f4686, type: 3}
+  recordsParent: {fileID: 1658374720}
+  recordUIPrefab: {fileID: 6564293860626555976, guid: 3cfd823dd819faa4eb982f68ad9f4686, type: 3}
 --- !u!1 &778270781
 GameObject:
   m_ObjectHideFlags: 0
@@ -2826,7 +2826,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 775269606}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ObjectUI, Assembly-CSharp
         m_MethodName: OnCreateAccount
         m_Mode: 1
@@ -3128,7 +3128,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 775269606}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ObjectUI, Assembly-CSharp
         m_MethodName: OnExit
         m_Mode: 1
@@ -3246,22 +3246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 612ad49ee11ab5f42a63038a9cafef8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1403646515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1403646511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ddb945c2be0f8f41a6b6bd2664c3443, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactButton: 323
-  playerCamera: {fileID: 963194227}
-  interactRange: 5
-  accountList: {fileID: 1456635595}
 --- !u!1 &1450937967
 GameObject:
   m_ObjectHideFlags: 0
@@ -5169,13 +5153,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1403646515, guid: 802be224b26595745a1b742c93941f85, type: 3}
+      propertyPath: recordList
+      value: 
+      objectReference: {fileID: 1456635595}
+    - target: {fileID: 1403646515, guid: 802be224b26595745a1b742c93941f85, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 963194227}
     - target: {fileID: 992794257160815544, guid: 802be224b26595745a1b742c93941f85, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 992794257160815544, guid: 802be224b26595745a1b742c93941f85, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 992794257160815549, guid: 802be224b26595745a1b742c93941f85, type: 3}
       propertyPath: m_RootOrder

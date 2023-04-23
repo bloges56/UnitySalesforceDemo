@@ -1,6 +1,7 @@
 using Salesforce;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class ObjectUI : MonoBehaviour
 {
 
     [SerializeField]
-    SalesforceClient salesforceClient;
+    protected SalesforceClient salesforceClient;
 
     [SerializeField]
     PlayerMovement playerMovement;
@@ -16,27 +17,16 @@ public class ObjectUI : MonoBehaviour
     [SerializeField]
     CameraMovement cameraMovement;
 
-    Account accountToInsert = new Account(null, "Test Account");
+    protected SalesforceRecord recordToInsert;
 
-    List<Account> accounts = new List<Account>();
+    [SerializeField] protected RectTransform recordsParent;
+    [SerializeField] protected GameObject recordUIPrefab;
 
-    [SerializeField] RectTransform accountRecordsParent;
-    [SerializeField] AccountRecordGraphic accountUIPrefab;
-
-    private void SetupAccountList()
+    protected virtual void SetupRecordList()
     {
-        foreach (Account account in accounts)
-        {
-            Debug.Log(account.name);
-            var newAccount = Instantiate(accountUIPrefab, accountRecordsParent);
-            newAccount.Setup(account);
-        }
     }
 
-    public void SetName(string name)
-    {
-        accountToInsert.name = name;
-    }
+
 
     IEnumerator HandleLogin()
     {
@@ -66,47 +56,19 @@ public class ObjectUI : MonoBehaviour
         }
     }
 
-    public IEnumerator GetAccounts()
-    {
-        // Get some Accounts
-        string query = Account.BASE_QUERY + " ORDER BY Name LIMIT 5";
-        Coroutine<List<Account>> getAccountsRoutine = this.StartCoroutine<List<Account>>(
-            salesforceClient.query<Account>(query)
-        );
-        yield return getAccountsRoutine.coroutine;
-        accounts = getAccountsRoutine.getValue();
-        SetupAccountList();
-    }
-
-    IEnumerator CreateAccount()
+    public virtual IEnumerator GetRecords()
     {
         yield return HandleLogin();
-
-        // Create account
-        Coroutine<Account> insertAccountRoutine = this.StartCoroutine<Account>(
-            salesforceClient.insert(accountToInsert)
-        );
-        yield return insertAccountRoutine.coroutine;
-        insertAccountRoutine.getValue();
-        Debug.Log("Account created named: " + accountToInsert.name);
     }
 
-    IEnumerator EditAccunt()
+    protected virtual IEnumerator CreateRecord()
     {
         yield return HandleLogin();
-
-        // Create account
-        Coroutine<Account> insertAccountRoutine = this.StartCoroutine<Account>(
-            salesforceClient.insert(accountToInsert)
-        );
-        yield return insertAccountRoutine.coroutine;
-        insertAccountRoutine.getValue();
-        Debug.Log("Account created named: " + accountToInsert.name);
     }
 
-    public void OnCreateAccount()
+    public void OnCreateRecord()
     {
-        StartCoroutine(CreateAccount());
+        StartCoroutine(CreateRecord());
     }
 
     public void OnExit()
@@ -115,10 +77,5 @@ public class ObjectUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         cameraMovement.enabled = true;
         transform.GetChild(1).gameObject.SetActive(false);
-    }
-
-    public void ViewAccounts()
-    {
-        StartCoroutine(GetAccounts());
     }
 }

@@ -20,7 +20,7 @@ public class ObjectInteraction : MonoBehaviour
     float interactRange;
 
     [SerializeField]
-    GameObject accountList;
+    GameObject recordList;
 
     //Detect when a player interacts with an object
     private IEnumerator Interact()
@@ -38,8 +38,8 @@ public class ObjectInteraction : MonoBehaviour
                 GetComponent<PlayerMovement>().enabled = false;
                 Cursor.lockState = CursorLockMode.None;
                 playerCamera.gameObject.GetComponent<CameraMovement>().enabled = false;
-                accountList.SetActive(true);
-                yield return hit.transform.gameObject.GetComponent<ObjectUI>().GetAccounts();
+                recordList.SetActive(true);
+                yield return hit.transform.gameObject.GetComponent<ObjectUI>().GetRecords();
             }
         }
     }

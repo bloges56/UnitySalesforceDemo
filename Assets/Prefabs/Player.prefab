@@ -140,13 +140,14 @@ GameObject:
   - component: {fileID: 992794257160815549}
   - component: {fileID: 992794257160815550}
   - component: {fileID: 992794257160815551}
+  - component: {fileID: 1403646515}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &992794257160815549
 Transform:
   m_ObjectHideFlags: 0
@@ -203,6 +204,22 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &1403646515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992794257160815544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ddb945c2be0f8f41a6b6bd2664c3443, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactButton: 323
+  playerCamera: {fileID: 0}
+  interactRange: 5
+  recordList: {fileID: 0}
 --- !u!1 &3773107885365327070
 GameObject:
   m_ObjectHideFlags: 0
