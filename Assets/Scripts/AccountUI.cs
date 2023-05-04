@@ -7,7 +7,7 @@ using UnityEngine.Profiling;
 
 public class AccountUI : ObjectUI
 {
-    Account accountToInsert;
+    Account accountToInsert = new Account();
     List<Account> accounts;
 
     protected override void SetupRecordList()
@@ -39,13 +39,11 @@ public class AccountUI : ObjectUI
     protected override IEnumerator CreateRecord()
     {
         yield return base.CreateRecord();
-
         // Create account
         Coroutine<SalesforceRecord> insertRecordRoutine = this.StartCoroutine<SalesforceRecord>(
             salesforceClient.insert(accountToInsert)
         );
         yield return insertRecordRoutine.coroutine;
         insertRecordRoutine.getValue();
-        Debug.Log("Account Created");
     }
 }
