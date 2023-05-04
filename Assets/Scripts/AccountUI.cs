@@ -14,7 +14,7 @@ public class AccountUI : ObjectUI
     {
         foreach (Account account in accounts)
         {
-            var newRecord = Instantiate(recordUIPrefab, recordsParent).transform.GetComponent<ObjectRecordGraphic>();
+            var newRecord = Instantiate(recordUIPrefab, recordsParent).transform.GetComponent<AccountRecordGraphic>();
             newRecord.Setup(account);
         }
     }
