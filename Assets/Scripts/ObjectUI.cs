@@ -85,6 +85,10 @@ public class ObjectUI : MonoBehaviour
         recordListUI.SetActive(false);
         createRecordUI.SetActive(false);
         objectInteraction.enabled= true;
+        foreach(Transform child in recordsParent.transform)
+        {
+           Destroy(child.gameObject);
+        }
     }
 
     public void OnClickNewRecord()
