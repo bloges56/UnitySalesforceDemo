@@ -1,6 +1,7 @@
 using Salesforce;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class ObjectUI : MonoBehaviour
 {
 
     [SerializeField]
-    SalesforceClient salesforceClient;
+    protected SalesforceClient salesforceClient;
 
     [SerializeField]
     PlayerMovement playerMovement;
@@ -16,18 +17,19 @@ public class ObjectUI : MonoBehaviour
     [SerializeField]
     CameraMovement cameraMovement;
 
-    Account accountRecord =  new Account(null, "Test Account");
+    protected SalesforceRecord recordToInsert;
 
-    public void SetName(string name)
+    [SerializeField] protected RectTransform recordsParent;
+    [SerializeField] protected GameObject recordUIPrefab;
+
+    protected virtual void SetupRecordList()
     {
-        accountRecord.name = name;
     }
 
-    IEnumerator CreateAccount()
+
+
+    IEnumerator HandleLogin()
     {
-        // Get Salesforce client component 
-        //salesforceClient.consumerKey = consumerKey.text;
-        //salesforceClient.consumerSecret = consumerSecret.text;
         Coroutine<bool> loginRoutine = this.StartCoroutine<bool>(
         salesforceClient.login()
     );
@@ -52,19 +54,21 @@ public class ObjectUI : MonoBehaviour
             Debug.Log("Salesforce login failed");
             throw e;
         }
-
-        // Create sample account
-        Coroutine<Account> insertAccountRoutine = this.StartCoroutine<Account>(
-            salesforceClient.insert(accountRecord)
-        );
-        yield return insertAccountRoutine.coroutine;
-        insertAccountRoutine.getValue();
-        Debug.Log("Account created named: " + accountRecord.name);
     }
 
-    public void OnCreateAccount()
+    public virtual IEnumerator GetRecords()
     {
-        StartCoroutine(CreateAccount());
+        yield return HandleLogin();
+    }
+
+    protected virtual IEnumerator CreateRecord()
+    {
+        yield return HandleLogin();
+    }
+
+    public void OnCreateRecord()
+    {
+        StartCoroutine(CreateRecord());
     }
 
     public void OnExit()
