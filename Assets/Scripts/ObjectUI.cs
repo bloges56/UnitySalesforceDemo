@@ -19,8 +19,13 @@ public class ObjectUI : MonoBehaviour
 
     protected SalesforceRecord recordToInsert;
 
-    [SerializeField] protected RectTransform recordsParent;
     [SerializeField] protected GameObject recordUIPrefab;
+    [SerializeField] protected RectTransform recordsParent;
+
+    [SerializeField] GameObject recordListUI;
+    [SerializeField] GameObject createRecordUI;
+
+    [SerializeField] ObjectInteraction objectInteraction;
 
     protected virtual void SetupRecordList()
     {
@@ -68,6 +73,7 @@ public class ObjectUI : MonoBehaviour
 
     public void OnCreateRecord()
     {
+        OnExitCreateNewRecord();
         StartCoroutine(CreateRecord());
     }
 
@@ -76,6 +82,22 @@ public class ObjectUI : MonoBehaviour
         playerMovement.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
         cameraMovement.enabled = true;
-        transform.GetChild(1).gameObject.SetActive(false);
+        recordListUI.SetActive(false);
+        createRecordUI.SetActive(false);
+        objectInteraction.enabled= true;
     }
+
+    public void OnClickNewRecord()
+    {
+        recordListUI.SetActive(false);
+        createRecordUI.SetActive(true);
+    }
+
+    public void OnExitCreateNewRecord()
+    {
+        recordListUI.SetActive(true);
+        createRecordUI.SetActive(false);
+    }
+
+
 }

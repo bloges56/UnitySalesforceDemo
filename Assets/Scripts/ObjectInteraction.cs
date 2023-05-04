@@ -19,9 +19,6 @@ public class ObjectInteraction : MonoBehaviour
     [SerializeField]
     float interactRange;
 
-    [SerializeField]
-    GameObject recordList;
-
     //Detect when a player interacts with an object
     private IEnumerator Interact()
     {
@@ -38,8 +35,9 @@ public class ObjectInteraction : MonoBehaviour
                 GetComponent<PlayerMovement>().enabled = false;
                 Cursor.lockState = CursorLockMode.None;
                 playerCamera.gameObject.GetComponent<CameraMovement>().enabled = false;
-                recordList.SetActive(true);
+                hit.transform.GetChild(2).gameObject.SetActive(true);
                 yield return hit.transform.gameObject.GetComponent<ObjectUI>().GetRecords();
+                enabled = false;
             }
         }
     }
