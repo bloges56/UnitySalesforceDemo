@@ -7,8 +7,17 @@ public class AccountRecordGraphic : MonoBehaviour, ObjectRecordGraphic
 {
     public TMP_Text accountName;
     // Start is called before the first frame update
-    public void Setup(Account account)
+    Account account = new Account();
+    AccountUI accountUI;
+    public void Setup(Account account, AccountUI accountUI)
     {
         accountName.text =  account.name;
+        this.account= account;
+        this.accountUI = accountUI;
+    }
+
+    public void OnSelect()
+    {
+        accountUI.OnSelectAccount(account);
     }
 }

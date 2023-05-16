@@ -5,5 +5,5 @@ using Salesforce;
 
 public interface ObjectRecordGraphic
 {
-    public void Setup(SalesforceRecord salesforceRecord) { }
+    public void Setup(SalesforceRecord salesforceRecord, ObjectUI objectUI) { }
 }

@@ -2,6 +2,7 @@ using Salesforce;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,9 @@ public class ObjectUI : MonoBehaviour
     [SerializeField] GameObject createRecordUI;
 
     [SerializeField] ObjectInteraction objectInteraction;
+
+    [SerializeField] GameObject updateRecordUI;
+
 
     protected virtual void SetupRecordList()
     {
@@ -71,6 +75,22 @@ public class ObjectUI : MonoBehaviour
         yield return HandleLogin();
     }
 
+    protected virtual IEnumerator UpdateRecord()
+    {
+        yield return HandleLogin();
+    }
+
+    protected void OnSelectRecord()
+    {
+        recordListUI.SetActive(false);
+        updateRecordUI.SetActive(true);
+    }
+
+    public void OnUpdateRecord()
+    {
+        StartCoroutine(UpdateRecord());
+    }
+
     public void OnCreateRecord()
     {
         OnExitCreateNewRecord();
@@ -84,6 +104,7 @@ public class ObjectUI : MonoBehaviour
         cameraMovement.enabled = true;
         recordListUI.SetActive(false);
         createRecordUI.SetActive(false);
+        updateRecordUI.SetActive(false);
         objectInteraction.enabled= true;
         foreach(Transform child in recordsParent.transform)
         {
@@ -101,6 +122,12 @@ public class ObjectUI : MonoBehaviour
     {
         recordListUI.SetActive(true);
         createRecordUI.SetActive(false);
+    }
+
+    public void OnExitUpdateRecord()
+    {
+        recordListUI.SetActive(true);
+        updateRecordUI.SetActive(false);
     }
 
 
