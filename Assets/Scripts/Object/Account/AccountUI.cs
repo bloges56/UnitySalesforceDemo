@@ -9,17 +9,18 @@ using UnityEngine.Profiling;
 public class AccountUI : ObjectUI
 {
     Account accountToInsert = new Account();
-    List<Account> accounts;
     Account accountToUpdate = new Account();
-
-    [SerializeField] TMP_Text updateAccountPlaceholderText;
-
+    Account accountToDelete = new Account();
+    List<Account> accounts;
+    Dictionary<Account, AccountRecordGraphic> accountGraphics =  new Dictionary<Account, AccountRecordGraphic>();
     protected override void SetupRecordList()
     {
+        base.SetupRecordList();
         foreach (Account account in accounts)
         {
             var newRecord = Instantiate(recordUIPrefab, recordsParent).transform.GetComponent<AccountRecordGraphic>();
             newRecord.Setup(account, this);
+            accountGraphics.Add(account, newRecord);
         }
     }
 
@@ -44,7 +45,7 @@ public class AccountUI : ObjectUI
     {
         OnSelectRecord();
         accountToUpdate = account;
-        updateAccountPlaceholderText.text = account.name;
+        updateObjectPlaceholderText.text = account.name;
     }
 
     public void UpdateName(string updateNameString)
@@ -56,21 +57,41 @@ public class AccountUI : ObjectUI
     {
         yield return base.CreateRecord();
         // Create account
-        Coroutine<SalesforceRecord> insertRecordRoutine = this.StartCoroutine<SalesforceRecord>(
+        Coroutine<Account> insertRecordRoutine = this.StartCoroutine<Account>(
             salesforceClient.insert(accountToInsert)
         );
         yield return insertRecordRoutine.coroutine;
-        insertRecordRoutine.getValue();
+        var newRecord = Instantiate(recordUIPrefab, recordsParent).transform.GetComponent<AccountRecordGraphic>();
+        newRecord.Setup(accountToInsert, this);
+        accountGraphics.Add(accountToInsert, newRecord);
     }
 
     protected override IEnumerator UpdateRecord()
     {
         yield return base.UpdateRecord();
-        Coroutine<SalesforceRecord> updateRecordRoutine = this.StartCoroutine<SalesforceRecord>(
-            salesforceClient.update(accountToUpdate)
+        Coroutine<Account> updateRecordRoutine = this.StartCoroutine<Account>(
+            salesforceClient.update((accountToUpdate))
         );
         yield return updateRecordRoutine.coroutine;
-        updateRecordRoutine.getValue();
+        accountGraphics[accountToUpdate].Setup(accountToUpdate, this);
+        
         OnExitUpdateRecord();
+    }
+
+    public void InitiateDeleteAccount(Account acc)
+    {
+        InitiateDeleteRecord();
+        accountToDelete = acc;
+        deleteObjectNameText.text = accountToDelete.name;
+    }
+    protected override IEnumerator DeleteRecord()
+    {
+        yield return base.DeleteRecord();
+        Coroutine<Account> deleteRecordRoutine = this.StartCoroutine<Account>(
+            salesforceClient.delete(accountToDelete)
+        );
+        yield return deleteRecordRoutine.coroutine;
+        Destroy(accountGraphics[accountToDelete].gameObject);
+        
     }
 }
