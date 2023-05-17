@@ -20,4 +20,9 @@ public class AccountRecordGraphic : MonoBehaviour, ObjectRecordGraphic
     {
         accountUI.OnSelectAccount(account);
     }
+
+    public void OnInitiateDelete()
+    {
+        accountUI.InitiateDeleteAccount(account);
+    }
 }

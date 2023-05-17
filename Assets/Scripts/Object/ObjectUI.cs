@@ -18,8 +18,6 @@ public class ObjectUI : MonoBehaviour
     [SerializeField]
     CameraMovement cameraMovement;
 
-    protected SalesforceRecord recordToInsert;
-
     [SerializeField] protected GameObject recordUIPrefab;
     [SerializeField] protected RectTransform recordsParent;
 
@@ -30,9 +28,15 @@ public class ObjectUI : MonoBehaviour
 
     [SerializeField] GameObject updateRecordUI;
 
+    [SerializeField] protected GameObject deleteRecordUI;
+    [SerializeField] protected TMP_Text updateObjectPlaceholderText;
+    [SerializeField] protected TMP_Text deleteObjectNameText;
+
+
 
     protected virtual void SetupRecordList()
     {
+        ClearRecordList();
     }
 
 
@@ -97,6 +101,29 @@ public class ObjectUI : MonoBehaviour
         StartCoroutine(CreateRecord());
     }
 
+    protected void InitiateDeleteRecord()
+    {
+        deleteRecordUI.SetActive(true);
+        recordListUI.SetActive(false);
+    }
+
+    protected virtual IEnumerator DeleteRecord()
+    {
+        yield return HandleLogin();
+    }
+
+    public void ExitDelete()
+    {
+        deleteRecordUI.SetActive(false);
+        recordListUI.SetActive(true);
+    }
+
+    public void OnDeleteRecord()
+    {
+        ExitDelete();
+        StartCoroutine(DeleteRecord());
+    }
+
     public void OnExit()
     {
         playerMovement.enabled = true;
@@ -128,6 +155,14 @@ public class ObjectUI : MonoBehaviour
     {
         recordListUI.SetActive(true);
         updateRecordUI.SetActive(false);
+    }
+
+    void ClearRecordList()
+    {
+        foreach(Transform recordUI in recordsParent.transform)
+        {
+            Destroy(recordUI.gameObject);
+        }
     }
 
 
