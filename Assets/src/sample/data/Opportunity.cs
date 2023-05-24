@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Opportunity : SalesforceRecord
 {
-    public const string BASE_QUERY = "SELECT Id, Name FROM Opportunity";
+    public const string BASE_QUERY = "SELECT Id, Name, CloseDate, StageName FROM Opportunity";
 
     public string name { get; set; }
     public string stage { get; set; }

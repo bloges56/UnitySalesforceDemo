@@ -101,6 +101,7 @@ public class OpportunityUI : ObjectUI
         );
         yield return deleteRecordRoutine.coroutine;
         Destroy(opportunityGraphics[opportunityToDelete].gameObject);
+        opportunityGraphics.Remove(opportunityToDelete);
 
     }
 }
