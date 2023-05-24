@@ -57,6 +57,14 @@ public class ConnectionUI : MonoBehaviour
     {
         StartCoroutine(Connect());
     }
+
+    private void Awake()
+    {
+        if(PlayerPrefs.HasKey("username"))
+        {
+            StartCoroutine(Connect());
+        }
+    }
 }
 
 
