@@ -18,6 +18,9 @@ public class ObjectUI : MonoBehaviour
     [SerializeField]
     CameraMovement cameraMovement;
 
+    [SerializeField]
+    Shoot shootAbility;
+
     [SerializeField] protected GameObject recordUIPrefab;
     [SerializeField] protected RectTransform recordsParent;
 
@@ -129,6 +132,7 @@ public class ObjectUI : MonoBehaviour
         playerMovement.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
         cameraMovement.enabled = true;
+        shootAbility.enabled = true;
         recordListUI.SetActive(false);
         createRecordUI.SetActive(false);
         updateRecordUI.SetActive(false);

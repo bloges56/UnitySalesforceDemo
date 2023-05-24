@@ -33,6 +33,7 @@ public class ObjectInteraction : MonoBehaviour
             if(Physics.Raycast(ray, out hit, interactRange) && hit.transform.CompareTag("Object"))
             {
                 GetComponent<PlayerMovement>().enabled = false;
+                GetComponent<Shoot>().enabled = false;
                 Cursor.lockState = CursorLockMode.None;
                 playerCamera.gameObject.GetComponent<CameraMovement>().enabled = false;
                 hit.transform.GetChild(2).gameObject.SetActive(true);
