@@ -76,6 +76,9 @@ namespace Salesforce
         * @throws SalesforceApiException if authentication request fails (possible reasons: network...)
         */
         public IEnumerator login() {
+
+            SetSavedLoginInfo();
+
             // Check configuration
             assertConfigurationIsValid(username, password);
 
@@ -112,6 +115,7 @@ namespace Salesforce
                     throw new SalesforceApiException("Salesforce authentication error: " + request.error);
                 }
                 else {
+                    SaveLoginInfo();
                     logResponseSuccess(request);
                     JSONObject obj = JSONObject.Parse(request.downloadHandler.text);
                     string token = obj.GetString("access_token");
@@ -119,6 +123,26 @@ namespace Salesforce
                     connection = new SalesforceConnection(token, instanceUrl, apiVersion);
                     yield return true;
                 }
+            }
+        }
+
+        void SaveLoginInfo()
+        {
+            PlayerPrefs.SetString("username", username);
+            PlayerPrefs.SetString("password", password);
+            PlayerPrefs.SetString("consumerSecret", consumerSecret);
+            PlayerPrefs.SetString("consumerKey", consumerKey);
+            PlayerPrefs.Save();
+        }
+
+        void SetSavedLoginInfo()
+        {
+            if (PlayerPrefs.HasKey("username"))
+            {
+                username = PlayerPrefs.GetString("username");
+                password = PlayerPrefs.GetString("password");
+                consumerSecret = PlayerPrefs.GetString("consumerSecret");
+                consumerKey = PlayerPrefs.GetString("consumerKey");
             }
         }
 
