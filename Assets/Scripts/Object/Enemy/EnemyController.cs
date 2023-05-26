@@ -17,13 +17,11 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(player.name);
         transform.position += Vector3.Normalize(player.transform.position - transform.position) * speed * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision Detected");
         if(collision.gameObject.tag == "Bullet")
         {
             spawner.RemoveEnemy(this.gameObject);
