@@ -137,7 +137,7 @@ namespace Salesforce
 
         void SetSavedLoginInfo()
         {
-            if (PlayerPrefs.HasKey("username"))
+            if (PlayerPrefs.GetString("username") != null)
             {
                 username = PlayerPrefs.GetString("username");
                 password = PlayerPrefs.GetString("password");

@@ -123,6 +123,87 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: de53366c9d54b5046b49996b4e68a8f9, type: 2}
+--- !u!1001 &207664636
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8296551106665795712, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_Name
+      value: SalesforceClient
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 26.339746
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8296551106665795718, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7a9b40626b6dc34448d7ec7621cad0aa, type: 3}
+--- !u!114 &207664637 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8296551106665795713, guid: 7a9b40626b6dc34448d7ec7621cad0aa,
+    type: 3}
+  m_PrefabInstance: {fileID: 207664636}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 587bba7dcd61bdb4f821e0f92e263da7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &306108803 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7442781921941657531, guid: 761cdc9e4e883334cbdcea062d0befa7,
@@ -229,12 +310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e9b849ae2755b428b23edfa9686c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!20 &524476513 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 8303093099919959869, guid: 761cdc9e4e883334cbdcea062d0befa7,
-    type: 3}
-  m_PrefabInstance: {fileID: 524476511}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &524476514 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6145509692674227223, guid: 761cdc9e4e883334cbdcea062d0befa7,
@@ -253,21 +328,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 524476511}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &524476516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524476515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ddb945c2be0f8f41a6b6bd2664c3443, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactButton: 101
-  playerCamera: {fileID: 524476513}
-  interactRange: 2
 --- !u!1001 &608833826
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -860,7 +920,7 @@ PrefabInstance:
         type: 3}
       propertyPath: salesforceClient
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 207664637}
     - target: {fileID: 587660985968886730, guid: 86c735ae3e630a049a41145b7d1ca3a1,
         type: 3}
       propertyPath: m_Pivot.x
@@ -969,7 +1029,7 @@ PrefabInstance:
     - target: {fileID: 587660985968886734, guid: 86c735ae3e630a049a41145b7d1ca3a1,
         type: 3}
       propertyPath: m_Name
-      value: SalesforceClient
+      value: ConnectionUI
       objectReference: {fileID: 0}
     - target: {fileID: 587660986671790475, guid: 86c735ae3e630a049a41145b7d1ca3a1,
         type: 3}

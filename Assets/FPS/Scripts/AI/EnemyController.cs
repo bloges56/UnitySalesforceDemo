@@ -3,6 +3,8 @@ using Unity.FPS.Game;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using Salesforce;
+using System.Collections;
 
 namespace Unity.FPS.AI
 {
@@ -84,7 +86,7 @@ namespace Unity.FPS.AI
         [Tooltip("Color of the sphere gizmo representing the detection range")]
         public Color DetectionRangeColor = Color.blue;
 
-        [SerializeField] SalesforceClient salesforceClient;
+        SalesforceClient salesforceClient;
 
         public UnityAction onAttack;
         public UnityAction onDetectedTarget;
@@ -119,6 +121,61 @@ namespace Unity.FPS.AI
         WeaponController m_CurrentWeapon;
         WeaponController[] m_Weapons;
         NavigationModule m_NavigationModule;
+        Enemy enemy;
+
+        IEnumerator CreateEnemy(Enemy enemy)
+        {
+            HandleLogin();
+            Coroutine<Enemy> insertRecordRoutine = this.StartCoroutine<Enemy>(
+                salesforceClient.insert(enemy)
+            );
+            yield return insertRecordRoutine.coroutine;
+        }
+        IEnumerator HandleLogin()
+        {
+            Coroutine<bool> loginRoutine = this.StartCoroutine<bool>(
+            salesforceClient.login()
+        );
+            yield return loginRoutine.coroutine;
+            try
+            {
+                loginRoutine.getValue();
+                Debug.Log("Salesforce login successful.");
+            }
+            catch (SalesforceConfigurationException e)
+            {
+                Debug.Log("Salesforce login failed due to invalid auth configuration");
+                throw e;
+            }
+            catch (SalesforceAuthenticationException e)
+            {
+                Debug.Log("Salesforce login failed due to invalid credentials");
+                throw e;
+            }
+            catch (SalesforceApiException e)
+            {
+                Debug.Log("Salesforce login failed");
+                throw e;
+            }
+        }
+
+        IEnumerator DeleteRecord(Enemy enemy)
+        {
+            HandleLogin();
+            Coroutine<Enemy> deleteRecordRoutine = this.StartCoroutine<Enemy>(
+                salesforceClient.delete(enemy)
+            );
+            yield return deleteRecordRoutine.coroutine;
+
+        }
+
+        private void Awake()
+        {
+            salesforceClient = FindObjectOfType<SalesforceClient>();
+            enemy = new Enemy();
+            enemy.name = "New Enemy";
+            StartCoroutine(CreateEnemy(enemy));
+        }
 
         void Start()
         {
@@ -361,6 +418,7 @@ namespace Unity.FPS.AI
 
         void OnDie()
         {
+            StartCoroutine(DeleteRecord(enemy));
             // spawn a particle system when dying
             var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);
             Destroy(vfx, 5f);

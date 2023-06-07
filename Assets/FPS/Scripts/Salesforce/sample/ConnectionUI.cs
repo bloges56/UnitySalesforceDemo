@@ -1,7 +1,6 @@
 using Salesforce;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,7 +59,7 @@ public class ConnectionUI : MonoBehaviour
 
     private void Awake()
     {
-        if(PlayerPrefs.HasKey("username"))
+        if(PlayerPrefs.GetString("username") != null)
         {
             StartCoroutine(Connect());
         }
