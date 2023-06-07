@@ -84,6 +84,8 @@ namespace Unity.FPS.AI
         [Tooltip("Color of the sphere gizmo representing the detection range")]
         public Color DetectionRangeColor = Color.blue;
 
+        [SerializeField] SalesforceClient salesforceClient;
+
         public UnityAction onAttack;
         public UnityAction onDetectedTarget;
         public UnityAction onLostTarget;
