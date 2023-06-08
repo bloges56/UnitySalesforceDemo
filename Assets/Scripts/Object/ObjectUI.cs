@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
+using Unity.FPS.Gameplay;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,10 +14,10 @@ public class ObjectUI : MonoBehaviour
     protected SalesforceClient salesforceClient;
 
     [SerializeField]
-    PlayerMovement playerMovement;
+    PlayerInputHandler playerMovement;
 
     [SerializeField]
-    CameraMovement cameraMovement;
+    PlayerCharacterController cameraMovement;
 
     [SerializeField]
     Shoot shootAbility;
