@@ -78,7 +78,6 @@ namespace Salesforce
         public IEnumerator login() {
 
             SetSavedLoginInfo();
-
             // Check configuration
             assertConfigurationIsValid(username, password);
 
@@ -137,7 +136,7 @@ namespace Salesforce
 
         void SetSavedLoginInfo()
         {
-            if (PlayerPrefs.GetString("username") != null)
+            if (PlayerPrefs.GetString("username") != "")
             {
                 username = PlayerPrefs.GetString("username");
                 password = PlayerPrefs.GetString("password");

@@ -11,12 +11,10 @@ public class ConnectionUI : MonoBehaviour
     Button submit;
 
     [SerializeField]
-    GameObject playerCam;
-
-    [SerializeField]
-    GameObject player;
+    GameObject playButton;
     [SerializeField]
     SalesforceClient salesforceClient;
+
 
     IEnumerator Connect()
     {
@@ -32,8 +30,7 @@ public class ConnectionUI : MonoBehaviour
             loginRoutine.getValue();
             Debug.Log("Salesforce login successful.");
             gameObject.SetActive(false);
-            player.SetActive(true);
-            playerCam.SetActive(true);
+            playButton.SetActive(true);
         }
         catch (SalesforceConfigurationException e)
         {
@@ -59,7 +56,7 @@ public class ConnectionUI : MonoBehaviour
 
     private void Awake()
     {
-        if(PlayerPrefs.GetString("username") != null)
+        if(PlayerPrefs.GetString("username") != "")
         {
             StartCoroutine(Connect());
         }
