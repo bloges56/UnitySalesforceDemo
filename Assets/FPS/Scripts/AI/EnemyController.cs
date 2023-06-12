@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using Salesforce;
 using System.Collections;
+using System;
 
 namespace Unity.FPS.AI
 {
@@ -121,13 +122,13 @@ namespace Unity.FPS.AI
         WeaponController m_CurrentWeapon;
         WeaponController[] m_Weapons;
         NavigationModule m_NavigationModule;
-        Enemy enemy;
+        Opportunity opportunity;
 
-        IEnumerator CreateEnemy(Enemy enemy)
+        IEnumerator CreateOpportunity(Opportunity opp)
         {
-            HandleLogin();
-            Coroutine<Enemy> insertRecordRoutine = this.StartCoroutine<Enemy>(
-                salesforceClient.insert(enemy)
+            //HandleLogin();
+            Coroutine<Opportunity> insertRecordRoutine = this.StartCoroutine<Opportunity>(
+                salesforceClient.insert(opp)
             );
             yield return insertRecordRoutine.coroutine;
         }
@@ -159,22 +160,23 @@ namespace Unity.FPS.AI
             }
         }
 
-        IEnumerator DeleteRecord(Enemy enemy)
+        IEnumerator UpdateOpportunityWon()
         {
-            HandleLogin();
-            Coroutine<Enemy> deleteRecordRoutine = this.StartCoroutine<Enemy>(
-                salesforceClient.delete(enemy)
+            opportunity.stage = "Closed Won";
+            Coroutine<Opportunity> updateRecordRoutine = this.StartCoroutine<Opportunity>(
+                salesforceClient.update((opportunity))
             );
-            yield return deleteRecordRoutine.coroutine;
-
+            yield return updateRecordRoutine.coroutine;
         }
 
         private void Awake()
         {
             salesforceClient = FindObjectOfType<SalesforceClient>();
-            enemy = new Enemy();
-            enemy.name = "New Enemy";
-            StartCoroutine(CreateEnemy(enemy));
+            opportunity = new Opportunity();
+            opportunity.name = "New Opporunity Enemy";
+            opportunity.stage = "Negotiation/Review";
+            opportunity.closeDate = DateTime.Today.AddDays(1).ToString("yyyy-mm-dd");
+            StartCoroutine(CreateOpportunity(opportunity));
         }
 
         void Start()
@@ -418,7 +420,7 @@ namespace Unity.FPS.AI
 
         void OnDie()
         {
-            StartCoroutine(DeleteRecord(enemy));
+            StartCoroutine(UpdateOpportunityWon());
             // spawn a particle system when dying
             var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);
             Destroy(vfx, 5f);
@@ -498,7 +500,7 @@ namespace Unity.FPS.AI
             else if (DropRate == 1)
                 return true;
             else
-                return (Random.value <= DropRate);
+                return (UnityEngine.Random.value <= DropRate);
         }
 
         void FindAndInitializeAllWeapons()
