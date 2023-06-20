@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using Salesforce;
 using System.Collections;
+using System;
 
 namespace Unity.FPS.AI
 {
@@ -121,60 +122,30 @@ namespace Unity.FPS.AI
         WeaponController m_CurrentWeapon;
         WeaponController[] m_Weapons;
         NavigationModule m_NavigationModule;
-        Enemy enemy;
+        [SerializeField] OpportunityRepsoitory oppRepo;
 
-        IEnumerator CreateEnemy(Enemy enemy)
+        IEnumerator ClosedWonOpportunity()
         {
-            HandleLogin();
-            Coroutine<Enemy> insertRecordRoutine = this.StartCoroutine<Enemy>(
-                salesforceClient.insert(enemy)
-            );
-            yield return insertRecordRoutine.coroutine;
-        }
-        IEnumerator HandleLogin()
-        {
-            Coroutine<bool> loginRoutine = this.StartCoroutine<bool>(
-            salesforceClient.login()
-        );
-            yield return loginRoutine.coroutine;
-            try
-            {
-                loginRoutine.getValue();
-                Debug.Log("Salesforce login successful.");
-            }
-            catch (SalesforceConfigurationException e)
-            {
-                Debug.Log("Salesforce login failed due to invalid auth configuration");
-                throw e;
-            }
-            catch (SalesforceAuthenticationException e)
-            {
-                Debug.Log("Salesforce login failed due to invalid credentials");
-                throw e;
-            }
-            catch (SalesforceApiException e)
-            {
-                Debug.Log("Salesforce login failed");
-                throw e;
-            }
+            oppRepo.oppToUpdate.stage = "Closed Won";
+            yield return oppRepo.UpdateRecord();
+
         }
 
-        IEnumerator DeleteRecord(Enemy enemy)
+        public IEnumerator ClosedLostOpportunity()
         {
-            HandleLogin();
-            Coroutine<Enemy> deleteRecordRoutine = this.StartCoroutine<Enemy>(
-                salesforceClient.delete(enemy)
-            );
-            yield return deleteRecordRoutine.coroutine;
+            oppRepo.oppToUpdate.stage = "Closed Lost";
+            yield return oppRepo.UpdateRecord();
 
         }
 
         private void Awake()
         {
-            salesforceClient = FindObjectOfType<SalesforceClient>();
-            enemy = new Enemy();
-            enemy.name = "New Enemy";
-            StartCoroutine(CreateEnemy(enemy));
+            oppRepo.oppToInsert = new Opportunity();
+            oppRepo.oppToUpdate = oppRepo.oppToInsert;
+            oppRepo.oppToInsert.name = "New Opportunity/Enemy";
+            oppRepo.oppToInsert.stage = "Negotiation/Review";
+            oppRepo.oppToInsert.closeDate = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
+            StartCoroutine(oppRepo.CreateRecord());
         }
 
         void Start()
@@ -418,7 +389,7 @@ namespace Unity.FPS.AI
 
         void OnDie()
         {
-            StartCoroutine(DeleteRecord(enemy));
+            StartCoroutine(ClosedWonOpportunity());
             // spawn a particle system when dying
             var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);
             Destroy(vfx, 5f);
@@ -498,7 +469,7 @@ namespace Unity.FPS.AI
             else if (DropRate == 1)
                 return true;
             else
-                return (Random.value <= DropRate);
+                return (UnityEngine.Random.value <= DropRate);
         }
 
         void FindAndInitializeAllWeapons()
