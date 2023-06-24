@@ -8,90 +8,63 @@ using UnityEngine.Profiling;
 
 public class AccountUI : ObjectUI
 {
-    Account accountToInsert = new Account();
-    Account accountToUpdate = new Account();
-    Account accountToDelete = new Account();
-    List<Account> accounts;
-    Dictionary<Account, AccountRecordGraphic> accountGraphics =  new Dictionary<Account, AccountRecordGraphic>();
-    protected override void SetupRecordList()
+    [SerializeField] AccountRepository accRepo;
+    Dictionary<Account, AccountRecordGraphic> opportunityGraphics = new Dictionary<Account, AccountRecordGraphic>();
+    public override IEnumerator SetupRecordList()
     {
         base.SetupRecordList();
-        foreach (Account account in accounts)
+        yield return accRepo.GetRecords();
+        foreach (Account opportunity in accRepo.accounts)
         {
             var newRecord = Instantiate(recordUIPrefab, recordsParent).transform.GetComponent<AccountRecordGraphic>();
-            newRecord.Setup(account, this);
-            accountGraphics.Add(account, newRecord);
+            newRecord.Setup(opportunity, this);
+            opportunityGraphics.Add(opportunity, newRecord);
         }
-    }
-
-    public override IEnumerator GetRecords()
-    {
-        yield return base.GetRecords();
-        // Get some records
-        Coroutine<List<Account>> getRecordsRoutine = this.StartCoroutine<List<Account>>(
-            base.salesforceClient.query<Account>(Account.BASE_QUERY + " ORDER BY Name LIMIT 5")
-        );
-        yield return getRecordsRoutine.coroutine;
-        accounts = getRecordsRoutine.getValue();
-        SetupRecordList();
     }
 
     public void SetName(string name)
     {
-        accountToInsert.name = name;
+        accRepo.accountToInsert.name = name;
     }
 
-    public void OnSelectAccount(Account account)
+    public void OnSelectAccount(Account opportunity)
     {
         OnSelectRecord();
-        accountToUpdate = account;
-        updateObjectPlaceholderText.text = account.name;
+        accRepo.accountToUpdate = opportunity;
+        updateObjectPlaceholderText.text = opportunity.name;
     }
 
     public void UpdateName(string updateNameString)
     {
-        accountToUpdate.name = updateNameString;
+        accRepo.accountToUpdate.name = updateNameString;
     }
 
-    protected override IEnumerator CreateRecord()
+    protected override IEnumerator CreateRecordUI()
     {
-        yield return base.CreateRecord();
-        // Create account
-        Coroutine<Account> insertRecordRoutine = this.StartCoroutine<Account>(
-            salesforceClient.insert(accountToInsert)
-        );
-        yield return insertRecordRoutine.coroutine;
+        yield return accRepo.CreateRecord();
         var newRecord = Instantiate(recordUIPrefab, recordsParent).transform.GetComponent<AccountRecordGraphic>();
-        newRecord.Setup(accountToInsert, this);
-        accountGraphics.Add(accountToInsert, newRecord);
+        newRecord.Setup(accRepo.accountToInsert, this);
+        opportunityGraphics.Add(accRepo.accountToInsert, newRecord);
     }
 
-    protected override IEnumerator UpdateRecord()
+    protected override IEnumerator UpdateRecordUI()
     {
-        yield return base.UpdateRecord();
-        Coroutine<Account> updateRecordRoutine = this.StartCoroutine<Account>(
-            salesforceClient.update((accountToUpdate))
-        );
-        yield return updateRecordRoutine.coroutine;
-        accountGraphics[accountToUpdate].Setup(accountToUpdate, this);
-        
+        yield return accRepo.UpdateRecord();
+
         OnExitUpdateRecord();
     }
 
-    public void InitiateDeleteAccount(Account acc)
+    public void InitiateDeleteAccount(Account opp)
     {
         InitiateDeleteRecord();
-        accountToDelete = acc;
-        deleteObjectNameText.text = accountToDelete.name;
+        accRepo.accountToDelete = opp;
+        deleteObjectNameText.text = accRepo.accountToDelete.name;
     }
-    protected override IEnumerator DeleteRecord()
+    protected override IEnumerator DeleteRecordUI()
     {
-        yield return base.DeleteRecord();
-        Coroutine<Account> deleteRecordRoutine = this.StartCoroutine<Account>(
-            salesforceClient.delete(accountToDelete)
-        );
-        yield return deleteRecordRoutine.coroutine;
-        Destroy(accountGraphics[accountToDelete].gameObject);
-        
+        yield return accRepo.DeleteRecord();
+        Destroy(opportunityGraphics[accRepo.accountToDelete].gameObject);
+        opportunityGraphics.Remove(accRepo.accountToDelete);
+
     }
 }

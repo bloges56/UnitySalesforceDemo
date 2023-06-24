@@ -37,7 +37,7 @@ public class ObjectInteraction : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 playerCamera.gameObject.GetComponent<CameraMovement>().enabled = false;
                 hit.transform.GetChild(2).gameObject.SetActive(true);
-                yield return hit.transform.gameObject.GetComponent<ObjectUI>().GetRecords();
+                yield return hit.transform.gameObject.GetComponent<ObjectUI>().SetupRecordList();
                 enabled = false;
             }
         }

@@ -68,6 +68,7 @@ GameObject:
   - component: {fileID: 6449686686394465367}
   - component: {fileID: 797398738606809810}
   - component: {fileID: 1614318205656627459}
+  - component: {fileID: -7760692342205531072}
   m_Layer: 0
   m_Name: Enemy_HoverBot
   m_TagString: Untagged
@@ -158,6 +159,7 @@ MonoBehaviour:
   PathReachingRangeColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   AttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
   DetectionRangeColor: {r: 0, g: 0, b: 1, a: 1}
+  oppRepo: {fileID: -7760692342205531072}
 --- !u!114 &4752156053906186385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,6 +366,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-7760692342205531072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015434656898269652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20d9bad0e17687a438b29776632709aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2201913640410082181
 GameObject:
   m_ObjectHideFlags: 0

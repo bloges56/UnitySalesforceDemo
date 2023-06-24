@@ -1,8 +1,11 @@
 {
-    "name": "fps.Game",
+    "name": "Integration",
     "rootNamespace": "",
     "references": [
-        "GUID:1826c0224c0d048b88112c79bbb0cd85"
+        "GUID:06e4e969f8d04844a95aa91f2886a635",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:27b7e9efd224f064990a97ed99e4456f",
+        "GUID:9c5543eabb73a6249ac07b2c065ee8b4"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

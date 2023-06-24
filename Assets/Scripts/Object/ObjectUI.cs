@@ -36,56 +36,29 @@ public class ObjectUI : MonoBehaviour
     [SerializeField] protected TMP_Text updateObjectPlaceholderText;
     [SerializeField] protected TMP_Text deleteObjectNameText;
 
+    [SerializeField] protected IObjectRepository objectRepository;
 
 
-    protected virtual void SetupRecordList()
+
+    public virtual IEnumerator SetupRecordList()
     {
         ClearRecordList();
+        yield return null;
     }
 
-
-
-    IEnumerator HandleLogin()
+    protected virtual IEnumerator DeleteRecordUI() 
     {
-        Coroutine<bool> loginRoutine = this.StartCoroutine<bool>(
-        salesforceClient.login()
-    );
-        yield return loginRoutine.coroutine;
-        try
-        {
-            loginRoutine.getValue();
-            Debug.Log("Salesforce login successful.");
-        }
-        catch (SalesforceConfigurationException e)
-        {
-            Debug.Log("Salesforce login failed due to invalid auth configuration");
-            throw e;
-        }
-        catch (SalesforceAuthenticationException e)
-        {
-            Debug.Log("Salesforce login failed due to invalid credentials");
-            throw e;
-        }
-        catch (SalesforceApiException e)
-        {
-            Debug.Log("Salesforce login failed");
-            throw e;
-        }
+        yield return null;
     }
 
-    public virtual IEnumerator GetRecords()
+    protected virtual IEnumerator UpdateRecordUI()
     {
-        yield return HandleLogin();
+        yield return null;
     }
 
-    protected virtual IEnumerator CreateRecord()
+    protected virtual IEnumerator CreateRecordUI()
     {
-        yield return HandleLogin();
-    }
-
-    protected virtual IEnumerator UpdateRecord()
-    {
-        yield return HandleLogin();
+        yield return null;
     }
 
     protected void OnSelectRecord()
@@ -96,24 +69,19 @@ public class ObjectUI : MonoBehaviour
 
     public void OnUpdateRecord()
     {
-        StartCoroutine(UpdateRecord());
+        StartCoroutine(objectRepository.UpdateRecord());
     }
 
     public void OnCreateRecord()
     {
         OnExitCreateNewRecord();
-        StartCoroutine(CreateRecord());
+        StartCoroutine(objectRepository.CreateRecord());
     }
 
     protected void InitiateDeleteRecord()
     {
         deleteRecordUI.SetActive(true);
         recordListUI.SetActive(false);
-    }
-
-    protected virtual IEnumerator DeleteRecord()
-    {
-        yield return HandleLogin();
     }
 
     public void ExitDelete()
@@ -125,7 +93,7 @@ public class ObjectUI : MonoBehaviour
     public void OnDeleteRecord()
     {
         ExitDelete();
-        StartCoroutine(DeleteRecord());
+        StartCoroutine(objectRepository.DeleteRecord());
     }
 
     public void OnExit()
