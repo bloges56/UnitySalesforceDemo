@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Salesforce;
+using Unity.FPS.Game;
 
 public class OpportunityRepsoitory : MonoBehaviour, IObjectRepository
 {
@@ -23,6 +24,7 @@ public class OpportunityRepsoitory : MonoBehaviour, IObjectRepository
     void Awake()
     {
         salesforceClient = GameObject.Find("SalesforceClient").GetComponent<SalesforceClient>();
+        EventManager.AddListener<PlayerDeathEvent>(OnPlayerDeath);
     }
 
     public IEnumerator GetRecords()
@@ -55,4 +57,12 @@ public class OpportunityRepsoitory : MonoBehaviour, IObjectRepository
         Coroutine<Opportunity> deleteRecordRoutine = this.StartCoroutine<Opportunity>(salesforceClient.delete(oppToDelete));
         yield return deleteRecordRoutine.coroutine;
     }
+
+    void UpdateOppClosedLost()
+    {
+        oppToUpdate.stage = "Closed Lost";
+        StartCoroutine(UpdateRecord());
+    }
+
+    void OnPlayerDeath(PlayerDeathEvent evt) => UpdateOppClosedLost();
 }
