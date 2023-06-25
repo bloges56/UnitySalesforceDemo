@@ -7,9 +7,9 @@ using UnityEngine.UIElements;
 public class Battle : MonoBehaviour
 {
     [Header("Battle Waves")]
-    [SerializeField] Queue<Queue<KeyValuePair<Enemy, int>>> wavesOfBattle;
-    Queue<KeyValuePair<Enemy, int>> currentWave;
-    KeyValuePair<Enemy, int> currentSubWave;
+    [SerializeField] BattleObject wavesOfBattle;
+    WaveObject currentWave;
+    SubWaveObject currentSubWave;
 
     [Header("Spawns")]
     [SerializeField] List<Transform> spawnPoints;
@@ -20,91 +20,62 @@ public class Battle : MonoBehaviour
     bool isWaveSpawning = false;
     bool areEnemiesSpawning = false;
 
-    Dictionary<string, List<Enemy>> _enemiesPool = new Dictionary<string, List<Enemy>>();
+    [HideInInspector]
+    public int enemiesAlive = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _enemiesPool.Add("alive", new List<Enemy>());
-        _enemiesPool.Add("dead", new List<Enemy>());
-       
-    }
-
-    Enemy CreateEnemy()
-    {
-        Enemy createdEnemy =  Instantiate(currentSubWave.Key.gameObject).GetComponent<Enemy>();
-        _enemiesPool["alive"].Add(createdEnemy);
-        return createdEnemy;
-    }
-
-   Enemy GetEnemy()
-    {
-        foreach(Enemy enm in _enemiesPool["dead"])
-        {
-            if(enm.EnemyType.Equals(currentSubWave.Key.EnemyType))
-            {
-                _enemiesPool["alive"].Add(enm);
-                _enemiesPool["dead"].Remove(enm);
-                enm.gameObject.SetActive(true);
-                return enm;
-            }
-        }
-        return CreateEnemy();
-    }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
         {
             StartCoroutine(RunBattle());
+            GetComponent<BoxCollider>().enabled = false;
         }
     }
 
     IEnumerator RunBattle()
     {
-        while(wavesOfBattle.Any())
+        foreach(WaveObject wave in wavesOfBattle.battle)
         {  
-            currentWave = wavesOfBattle.Dequeue();
+            currentWave = wave;
             isWaveSpawning = true;
             StartCoroutine(SpawnWave());
-            yield return new WaitUntil(() => _enemiesPool["alive"].Count == 0 && !isWaveSpawning);
+            yield return new WaitUntil(() => !isWaveSpawning  && enemiesAlive == 0);
             yield return new WaitForSeconds(waveInterval);
         }
+        Destroy(spawnPoints[0].parent.gameObject);
+        Destroy(gameObject);
     }
 
     IEnumerator SpawnWave()
     {
-
-        currentSubWave = currentWave.Dequeue();
-        areEnemiesSpawning = true;
-        StartCoroutine(SpawnEnemies());
-
-        yield return new WaitUntil(() => !areEnemiesSpawning && _enemiesPool["alive"].Count == 0);
-
+        foreach (SubWaveObject subWave in currentWave.wave)
+        {
+            currentSubWave = subWave;
+            areEnemiesSpawning = true;
+            StartCoroutine(SpawnEnemies());
+            yield return new WaitUntil(() => !areEnemiesSpawning);
+        }  
         isWaveSpawning= false;
     }
 
 
     IEnumerator SpawnEnemies()
     {
-        for(int i =0; i < currentSubWave.Value; i++)
+        for(int i =0; i < currentSubWave.numberofEnemies; i++)
         {
-            Enemy spawnedEnemy = GetEnemy();
+            Enemy spawnedEnemy = Instantiate(currentSubWave.enemy.gameObject).GetComponent<Enemy>();
             SpawnEnemy(spawnedEnemy);
+            spawnedEnemy.battle = this;
+            enemiesAlive++;
             yield return new WaitForSeconds(enemySpawnInterval);
         }
+        areEnemiesSpawning = false;
     }
 
     void SpawnEnemy(Enemy enm)
     {
         int spawnIndex = Random.Range(0, spawnPoints.Count - 1);
         enm.gameObject.transform.position = spawnPoints[spawnIndex].position;
-    }
-
-    public void RemoveEnemy(Enemy enm)
-    {
-        enm.gameObject.SetActive(false);
-        _enemiesPool["alive"].Remove(enm);
-        _enemiesPool["dead"].Remove(enm);
     }
 }

@@ -145,11 +145,11 @@ namespace Unity.FPS.AI
             oppRepo.oppToInsert.name = "New Opportunity/Enemy";
             oppRepo.oppToInsert.stage = "Negotiation/Review";
             oppRepo.oppToInsert.closeDate = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
-            StartCoroutine(oppRepo.CreateRecord());
         }
 
         void Start()
         {
+            StartCoroutine(oppRepo.CreateRecord());
             m_EnemyManager = FindObjectOfType<EnemyManager>();
             DebugUtility.HandleErrorIfNullFindObject<EnemyManager, EnemyController>(m_EnemyManager, this);
 
