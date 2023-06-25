@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 026e62e7bc60950498a2dd59bc656776, type: 3}
+  m_Name: HoverBotBattle
+  m_EditorClassIdentifier: 
+  battle:
+  - {fileID: 11400000, guid: 9d34e7bb07aafc74b8a4031e2d167b8b, type: 2}
+  - {fileID: 11400000, guid: 9d34e7bb07aafc74b8a4031e2d167b8b, type: 2}
