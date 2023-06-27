@@ -387,7 +387,7 @@ namespace Unity.FPS.AI
             }
         }
 
-        void OnDie()
+        public void OnDie()
         {
             StartCoroutine(ClosedWonOpportunity());
             // spawn a particle system when dying
