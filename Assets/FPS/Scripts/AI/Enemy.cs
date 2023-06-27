@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,14 @@ public class Enemy : MonoBehaviour
 
     private void OnDestroy()
     {
-        battle.enemiesAlive--;
+        try
+        {
+            battle.enemiesAlive--;
+        }
+        catch(Exception e)
+        {
+            Debug.Log("Battle is over");
+        }
+        
     }
 }

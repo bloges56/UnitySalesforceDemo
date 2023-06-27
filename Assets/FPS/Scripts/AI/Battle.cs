@@ -17,17 +17,30 @@ public class Battle : MonoBehaviour
     [Header("Battle Settings")]
     [SerializeField] int waveInterval, enemySpawnInterval;
 
+    [Header("Doors")]
+    [SerializeField] GameObject doors;
+
     bool isWaveSpawning = false;
     bool areEnemiesSpawning = false;
 
     [HideInInspector]
     public int enemiesAlive = 0;
 
+    void CloseDoors()
+    {
+        doors.SetActive(true);
+    }
+
+    void OpenDoors()
+    {
+        Destroy(doors);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
         {
+            CloseDoors();
             StartCoroutine(RunBattle());
             GetComponent<BoxCollider>().enabled = false;
         }
@@ -43,6 +56,7 @@ public class Battle : MonoBehaviour
             yield return new WaitUntil(() => !isWaveSpawning  && enemiesAlive == 0);
             yield return new WaitForSeconds(waveInterval);
         }
+        OpenDoors();
         Destroy(spawnPoints[0].parent.gameObject);
         Destroy(gameObject);
     }
